@@ -1,4 +1,4 @@
-package com.github.diegogrlima.reservaai.exceptions;
+package com.github.diegogrlima.reservaai.exception;
 
 public class EmailAlreadyExistsException extends RuntimeException {
 

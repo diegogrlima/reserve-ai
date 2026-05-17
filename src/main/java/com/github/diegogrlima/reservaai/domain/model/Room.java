@@ -1,4 +1,4 @@
-package com.github.diegogrlima.reservaai.model;
+package com.github.diegogrlima.reservaai.domain.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

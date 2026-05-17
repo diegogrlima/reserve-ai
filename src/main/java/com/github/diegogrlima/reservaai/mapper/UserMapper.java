@@ -1,8 +1,8 @@
 package com.github.diegogrlima.reservaai.mapper;
 
-import com.github.diegogrlima.reservaai.dtos.request.CreateUserRequestDTO;
-import com.github.diegogrlima.reservaai.dtos.response.UserResponseDTO;
-import com.github.diegogrlima.reservaai.model.User;
+import com.github.diegogrlima.reservaai.domain.model.User;
+import com.github.diegogrlima.reservaai.dto.request.CreateUserRequestDTO;
+import com.github.diegogrlima.reservaai.dto.response.UserResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

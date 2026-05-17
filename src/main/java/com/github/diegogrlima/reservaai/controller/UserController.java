@@ -1,8 +1,8 @@
-package com.github.diegogrlima.reservaai.controllers;
+package com.github.diegogrlima.reservaai.controller;
 
-import com.github.diegogrlima.reservaai.dtos.request.CreateUserRequestDTO;
-import com.github.diegogrlima.reservaai.dtos.response.UserResponseDTO;
-import com.github.diegogrlima.reservaai.services.users.CreateUserService;
+import com.github.diegogrlima.reservaai.dto.request.CreateUserRequestDTO;
+import com.github.diegogrlima.reservaai.dto.response.UserResponseDTO;
+import com.github.diegogrlima.reservaai.service.user.CreateUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

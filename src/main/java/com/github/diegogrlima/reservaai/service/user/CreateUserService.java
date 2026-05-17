@@ -1,10 +1,10 @@
-package com.github.diegogrlima.reservaai.services.users;
+package com.github.diegogrlima.reservaai.service.user;
 
-import com.github.diegogrlima.reservaai.dtos.request.CreateUserRequestDTO;
-import com.github.diegogrlima.reservaai.dtos.response.UserResponseDTO;
-import com.github.diegogrlima.reservaai.exceptions.EmailAlreadyExistsException;
+import com.github.diegogrlima.reservaai.domain.model.User;
+import com.github.diegogrlima.reservaai.dto.request.CreateUserRequestDTO;
+import com.github.diegogrlima.reservaai.dto.response.UserResponseDTO;
+import com.github.diegogrlima.reservaai.exception.EmailAlreadyExistsException;
 import com.github.diegogrlima.reservaai.mapper.UserMapper;
-import com.github.diegogrlima.reservaai.model.User;
 import com.github.diegogrlima.reservaai.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

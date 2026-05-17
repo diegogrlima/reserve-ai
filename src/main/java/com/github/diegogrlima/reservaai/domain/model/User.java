@@ -1,6 +1,6 @@
-package com.github.diegogrlima.reservaai.model;
+package com.github.diegogrlima.reservaai.domain.model;
 
-import com.github.diegogrlima.reservaai.enums.Role;
+import com.github.diegogrlima.reservaai.domain.enums.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

@@ -1,6 +1,6 @@
-package com.github.diegogrlima.reservaai.exceptions;
+package com.github.diegogrlima.reservaai.exception;
 
-import com.github.diegogrlima.reservaai.dtos.response.ErrorResponseDTO;
+import com.github.diegogrlima.reservaai.dto.response.ErrorResponseDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;

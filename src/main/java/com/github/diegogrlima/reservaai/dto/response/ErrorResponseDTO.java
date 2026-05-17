@@ -1,4 +1,4 @@
-package com.github.diegogrlima.reservaai.dtos.response;
+package com.github.diegogrlima.reservaai.dto.response;
 
 import java.time.Instant;
 
