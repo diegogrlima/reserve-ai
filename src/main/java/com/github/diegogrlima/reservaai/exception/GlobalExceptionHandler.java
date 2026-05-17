@@ -39,6 +39,14 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(HttpStatus.NOT_FOUND, exception.getMessage(), request);
     }
 
+    @ExceptionHandler(RoomAlreadyBookedException.class)
+    public ResponseEntity<ErrorResponseDTO> handleRoomAlreadyBooked(
+            RoomAlreadyBookedException exception,
+            HttpServletRequest request
+    ) {
+        return buildErrorResponse(HttpStatus.CONFLICT, exception.getMessage(), request);
+    }
+
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ErrorResponseDTO> handleUserNotFound(
             UserNotFoundException exception,
