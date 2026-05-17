@@ -35,7 +35,7 @@ public class User {
 
     @Email
     @NotBlank
-    @Column(name = "email", length = 150, nullable = false)
+    @Column(name = "email", length = 150, nullable = false, unique = true)
     private String email;
 
     @NotNull
