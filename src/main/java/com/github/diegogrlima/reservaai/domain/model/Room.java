@@ -29,7 +29,7 @@ public class Room {
     private Long id;
 
     @NotBlank
-    @Column(name = "room_number", nullable = false, length = 15)
+    @Column(name = "room_number", nullable = false, length = 15, unique = true)
     private String roomNumber;
 
     @NotBlank
