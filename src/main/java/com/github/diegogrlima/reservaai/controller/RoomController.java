@@ -4,6 +4,7 @@ import com.github.diegogrlima.reservaai.dto.request.CreateRoomRequestDTO;
 import com.github.diegogrlima.reservaai.dto.request.UpdateRoomRequestDTO;
 import com.github.diegogrlima.reservaai.dto.response.RoomResponseDTO;
 import com.github.diegogrlima.reservaai.service.room.CreateRoomService;
+import com.github.diegogrlima.reservaai.service.room.DeleteRoomService;
 import com.github.diegogrlima.reservaai.service.room.GetAllRoomsService;
 import com.github.diegogrlima.reservaai.service.room.GetRoomByIdService;
 import com.github.diegogrlima.reservaai.service.room.UpdateRoomService;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,6 +32,7 @@ public class RoomController {
     private final GetAllRoomsService getAllRoomsService;
     private final GetRoomByIdService getRoomByIdService;
     private final UpdateRoomService updateRoomService;
+    private final DeleteRoomService deleteRoomService;
 
     @PostMapping
     public ResponseEntity<RoomResponseDTO> create(@Valid @RequestBody CreateRoomRequestDTO request) {
@@ -60,5 +63,12 @@ public class RoomController {
         RoomResponseDTO response = updateRoomService.execute(id, request);
 
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        deleteRoomService.execute(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
