@@ -1,4 +1,4 @@
-# reserve-ai
+# Reserve-ai
 
 API REST para gestão de reservas de quartos desenvolvida com Java, Spring Boot, JPA, Flyway e MapStruct.
 
