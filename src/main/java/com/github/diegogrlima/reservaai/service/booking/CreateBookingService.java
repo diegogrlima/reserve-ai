@@ -1,5 +1,6 @@
 package com.github.diegogrlima.reservaai.service.booking;
 
+import com.github.diegogrlima.reservaai.domain.enums.BookingStatus;
 import com.github.diegogrlima.reservaai.domain.model.Booking;
 import com.github.diegogrlima.reservaai.domain.model.Room;
 import com.github.diegogrlima.reservaai.domain.model.User;
@@ -39,6 +40,7 @@ public class CreateBookingService {
         Booking booking = new Booking();
         booking.setUser(user);
         booking.setRoom(room);
+        booking.setStatus(BookingStatus.CONFIRMED);
 
         Booking savedBooking = bookingRepository.save(booking);
 
