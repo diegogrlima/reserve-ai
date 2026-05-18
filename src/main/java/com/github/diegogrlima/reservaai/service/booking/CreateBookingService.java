@@ -8,6 +8,7 @@ import com.github.diegogrlima.reservaai.dto.request.CreateBookingRequestDTO;
 import com.github.diegogrlima.reservaai.dto.response.BookingResponseDTO;
 import com.github.diegogrlima.reservaai.exception.BookingAlreadyExistsException;
 import com.github.diegogrlima.reservaai.exception.RoomNotFoundException;
+import com.github.diegogrlima.reservaai.exception.UserAlreadyBookedException;
 import com.github.diegogrlima.reservaai.exception.UserNotFoundException;
 import com.github.diegogrlima.reservaai.mapper.BookingMapper;
 import com.github.diegogrlima.reservaai.repository.BookingRepository;
@@ -28,6 +29,10 @@ public class CreateBookingService {
 
     @Transactional
     public BookingResponseDTO execute(CreateBookingRequestDTO request) {
+        if (bookingRepository.existsByUserId(request.userId())) {
+            throw new UserAlreadyBookedException(request.userId());
+        }
+
         if (bookingRepository.existsByRoomId(request.roomId())) {
             throw new BookingAlreadyExistsException(request.roomId());
         }

@@ -55,6 +55,14 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(HttpStatus.NOT_FOUND, exception.getMessage(), request);
     }
 
+    @ExceptionHandler(UserAlreadyBookedException.class)
+    public ResponseEntity<ErrorResponseDTO> handleUserAlreadyBooked(
+            UserAlreadyBookedException exception,
+            HttpServletRequest request
+    ) {
+        return buildErrorResponse(HttpStatus.CONFLICT, exception.getMessage(), request);
+    }
+
     @ExceptionHandler(BookingAlreadyExistsException.class)
     public ResponseEntity<ErrorResponseDTO> handleBookingAlreadyExists(
             BookingAlreadyExistsException exception,

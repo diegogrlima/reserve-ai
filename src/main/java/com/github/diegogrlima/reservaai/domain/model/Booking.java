@@ -31,7 +31,7 @@ public class Booking {
 
     @NotNull
     @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
     @NotNull
