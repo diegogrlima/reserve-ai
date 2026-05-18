@@ -7,6 +7,7 @@ import com.github.diegogrlima.reservaai.dto.response.RoomResponseDTO;
 import com.github.diegogrlima.reservaai.service.room.CreateRoomService;
 import com.github.diegogrlima.reservaai.service.room.DeleteRoomService;
 import com.github.diegogrlima.reservaai.service.room.GetAllRoomsService;
+import com.github.diegogrlima.reservaai.service.room.GetAvailableRoomsService;
 import com.github.diegogrlima.reservaai.service.room.GetRoomByIdService;
 import com.github.diegogrlima.reservaai.service.room.UpdateRoomService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,6 +40,7 @@ public class RoomController {
 
     private final CreateRoomService createRoomService;
     private final GetAllRoomsService getAllRoomsService;
+    private final GetAvailableRoomsService getAvailableRoomsService;
     private final GetRoomByIdService getRoomByIdService;
     private final UpdateRoomService updateRoomService;
     private final DeleteRoomService deleteRoomService;
@@ -66,6 +68,17 @@ public class RoomController {
     })
     public ResponseEntity<Page<RoomResponseDTO>> getAll(@ParameterObject Pageable pageable) {
         Page<RoomResponseDTO> response = getAllRoomsService.execute(pageable);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/available")
+    @Operation(summary = "Listar quartos disponíveis", description = "Retorna apenas os quartos sem reserva CONFIRMED.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista de quartos disponíveis retornada com sucesso")
+    })
+    public ResponseEntity<Page<RoomResponseDTO>> getAvailable(@ParameterObject Pageable pageable) {
+        Page<RoomResponseDTO> response = getAvailableRoomsService.execute(pageable);
 
         return ResponseEntity.ok(response);
     }

@@ -1,5 +1,6 @@
 package com.github.diegogrlima.reservaai.repository;
 
+import com.github.diegogrlima.reservaai.domain.enums.BookingStatus;
 import com.github.diegogrlima.reservaai.domain.model.Booking;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -7,11 +8,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
-    boolean existsByRoomId(Long roomId);
+    boolean existsByRoomIdAndStatus(Long roomId, BookingStatus status);
 
-    boolean existsByRoomIdAndIdNot(Long roomId, Long id);
+    boolean existsByRoomIdAndStatusAndIdNot(Long roomId, BookingStatus status, Long id);
 
-    boolean existsByUserId(Long userId);
+    boolean existsByUserIdAndStatus(Long userId, BookingStatus status);
 
-    boolean existsByUserIdAndIdNot(Long userId, Long id);
+    boolean existsByUserIdAndStatusAndIdNot(Long userId, BookingStatus status, Long id);
 }

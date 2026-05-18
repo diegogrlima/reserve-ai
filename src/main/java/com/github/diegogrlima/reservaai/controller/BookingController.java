@@ -42,7 +42,7 @@ public class BookingController {
     private final CancelBookingService cancelBookingService;
 
     @PostMapping
-    @Operation(summary = "Cadastrar reserva", description = "Cria uma reserva vinculada a um usuário e a um quarto. Não permite duplicidade para usuário ou quarto.")
+    @Operation(summary = "Cadastrar reserva", description = "Cria uma reserva vinculada a um usuário e a um quarto com status CONFIRMED.")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Reserva cadastrada com sucesso",
                     content = @Content(schema = @Schema(implementation = BookingResponseDTO.class))),
@@ -69,7 +69,7 @@ public class BookingController {
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Atualizar reserva", description = "Atualiza usuário e quarto de uma reserva já existente.")
+    @Operation(summary = "Atualizar reserva", description = "Atualiza usuário e quarto de uma reserva já existente. Só bloqueia conflitos com reservas CONFIRMED.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Reserva atualizada com sucesso",
                     content = @Content(schema = @Schema(implementation = BookingResponseDTO.class))),

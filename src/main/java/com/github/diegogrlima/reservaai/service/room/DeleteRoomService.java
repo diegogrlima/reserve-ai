@@ -1,5 +1,6 @@
 package com.github.diegogrlima.reservaai.service.room;
 
+import com.github.diegogrlima.reservaai.domain.enums.BookingStatus;
 import com.github.diegogrlima.reservaai.exception.RoomAlreadyBookedException;
 import com.github.diegogrlima.reservaai.exception.RoomNotFoundException;
 import com.github.diegogrlima.reservaai.repository.BookingRepository;
@@ -21,7 +22,7 @@ public class DeleteRoomService {
             throw new RoomNotFoundException(id);
         }
 
-        if (bookingRepository.existsByRoomId(id)) {
+        if (bookingRepository.existsByRoomIdAndStatus(id, BookingStatus.CONFIRMED)) {
             throw new RoomAlreadyBookedException(id);
         }
 

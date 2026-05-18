@@ -1,5 +1,6 @@
 package com.github.diegogrlima.reservaai.service.booking;
 
+import com.github.diegogrlima.reservaai.domain.enums.BookingStatus;
 import com.github.diegogrlima.reservaai.domain.model.Booking;
 import com.github.diegogrlima.reservaai.domain.model.Room;
 import com.github.diegogrlima.reservaai.domain.model.User;
@@ -32,11 +33,11 @@ public class UpdateBookingService {
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new BookingNotFoundException(id));
 
-        if (bookingRepository.existsByRoomIdAndIdNot(request.roomId(), id)) {
+        if (bookingRepository.existsByRoomIdAndStatusAndIdNot(request.roomId(), BookingStatus.CONFIRMED, id)) {
             throw new BookingAlreadyExistsException(request.roomId());
         }
 
-        if (bookingRepository.existsByUserIdAndIdNot(request.userId(), id)) {
+        if (bookingRepository.existsByUserIdAndStatusAndIdNot(request.userId(), BookingStatus.CONFIRMED, id)) {
             throw new UserAlreadyBookedException(request.userId());
         }
 

@@ -29,11 +29,11 @@ public class CreateBookingService {
 
     @Transactional
     public BookingResponseDTO execute(CreateBookingRequestDTO request) {
-        if (bookingRepository.existsByUserId(request.userId())) {
+        if (bookingRepository.existsByUserIdAndStatus(request.userId(), BookingStatus.CONFIRMED)) {
             throw new UserAlreadyBookedException(request.userId());
         }
 
-        if (bookingRepository.existsByRoomId(request.roomId())) {
+        if (bookingRepository.existsByRoomIdAndStatus(request.roomId(), BookingStatus.CONFIRMED)) {
             throw new BookingAlreadyExistsException(request.roomId());
         }
 
