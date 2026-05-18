@@ -5,6 +5,7 @@ import com.github.diegogrlima.reservaai.dto.request.UpdateRoomRequestDTO;
 import com.github.diegogrlima.reservaai.dto.response.RoomResponseDTO;
 import com.github.diegogrlima.reservaai.exception.RoomAlreadyExistsException;
 import com.github.diegogrlima.reservaai.exception.RoomNotFoundException;
+import com.github.diegogrlima.reservaai.mapper.JsonConverter;
 import com.github.diegogrlima.reservaai.mapper.RoomMapper;
 import com.github.diegogrlima.reservaai.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ public class UpdateRoomService {
 
     private final RoomRepository roomRepository;
     private final RoomMapper roomMapper;
+    private final JsonConverter jsonConverter;
 
     @Transactional
     public RoomResponseDTO execute(Long id, UpdateRoomRequestDTO request) {
@@ -28,6 +30,14 @@ public class UpdateRoomService {
         }
 
         roomMapper.updateEntity(request, room);
+
+        if (request.gallery() != null) {
+            room.setGallery(jsonConverter.listToJson(request.gallery()));
+        }
+        if (request.amenities() != null) {
+            room.setAmenities(jsonConverter.listToJson(request.amenities()));
+        }
+
         Room updatedRoom = roomRepository.save(room);
 
         return roomMapper.toResponse(updatedRoom);
