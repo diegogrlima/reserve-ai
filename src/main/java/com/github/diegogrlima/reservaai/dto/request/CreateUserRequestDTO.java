@@ -16,6 +16,11 @@ public record CreateUserRequestDTO(
         @Email
         @NotBlank
         @Size(max = 150)
-        String email
+        String email,
+
+        @Schema(description = "Senha do usuario.", example = "Senha@123")
+        @NotBlank
+        @Size(min = 6, max = 100)
+        String password
 ) {
 }

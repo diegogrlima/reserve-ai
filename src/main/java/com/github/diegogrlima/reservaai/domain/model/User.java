@@ -38,6 +38,10 @@ public class User {
     @Column(name = "email", length = 150, nullable = false, unique = true)
     private String email;
 
+    @NotBlank
+    @Column(name = "password", nullable = false)
+    private String password;
+
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
