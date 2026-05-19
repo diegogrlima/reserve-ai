@@ -64,7 +64,7 @@ public class RoomController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @PreAuthorize("permitAll()")
     @Operation(summary = "Listar quartos", description = "Retorna a listagem paginada de quartos.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Lista de quartos retornada com sucesso")
@@ -76,7 +76,7 @@ public class RoomController {
     }
 
     @GetMapping("/available")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @PreAuthorize("permitAll()")
     @Operation(summary = "Listar quartos disponíveis", description = "Retorna apenas os quartos sem reserva CONFIRMED.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Lista de quartos disponíveis retornada com sucesso")
@@ -88,7 +88,7 @@ public class RoomController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @PreAuthorize("permitAll()")
     @Operation(summary = "Buscar quarto por ID", description = "Retorna um quarto pelo identificador.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Quarto encontrado",

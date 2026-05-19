@@ -37,6 +37,7 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/rooms/**").permitAll()
                         .requestMatchers(
                                 "/auth/login",
                                 "/swagger-ui/**",
