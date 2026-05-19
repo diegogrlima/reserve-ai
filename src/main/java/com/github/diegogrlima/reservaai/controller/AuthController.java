@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
+    @PreAuthorize("permitAll()")
     @Operation(summary = "Autenticar usuario", description = "Valida e-mail e senha e retorna um token JWT.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Usuario autenticado com sucesso",
