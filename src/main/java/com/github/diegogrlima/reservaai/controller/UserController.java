@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,6 +35,7 @@ public class UserController {
     private final GetAllUsersService getAllUsersService;
 
     @PostMapping
+    @PreAuthorize("permitAll()")
     @Operation(summary = "Cadastrar usuário", description = "Cria um novo usuário com e-mail único.")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Usuário cadastrado com sucesso",
@@ -50,6 +52,7 @@ public class UserController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Listar usuários", description = "Retorna a listagem paginada de usuários.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Lista de usuários retornada com sucesso")

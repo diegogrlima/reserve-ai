@@ -23,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,6 +47,7 @@ public class RoomController {
     private final DeleteRoomService deleteRoomService;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Cadastrar quarto", description = "Cria um novo quarto com número único.")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Quarto cadastrado com sucesso",
@@ -62,6 +64,7 @@ public class RoomController {
     }
 
     @GetMapping
+    @PreAuthorize("permitAll()")
     @Operation(summary = "Listar quartos", description = "Retorna a listagem paginada de quartos.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Lista de quartos retornada com sucesso")
@@ -73,6 +76,7 @@ public class RoomController {
     }
 
     @GetMapping("/available")
+    @PreAuthorize("permitAll()")
     @Operation(summary = "Listar quartos disponíveis", description = "Retorna apenas os quartos sem reserva CONFIRMED.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Lista de quartos disponíveis retornada com sucesso")
@@ -84,6 +88,7 @@ public class RoomController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("permitAll()")
     @Operation(summary = "Buscar quarto por ID", description = "Retorna um quarto pelo identificador.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Quarto encontrado",
@@ -98,6 +103,7 @@ public class RoomController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Atualizar quarto", description = "Atualiza os dados de um quarto sem permitir duplicidade do número.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Quarto atualizado com sucesso",
@@ -119,6 +125,7 @@ public class RoomController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Remover quarto", description = "Remove um quarto por ID. Bloqueia a exclusão se houver reserva vinculada.")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Quarto removido com sucesso"),
