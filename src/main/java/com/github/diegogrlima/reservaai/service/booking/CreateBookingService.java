@@ -46,6 +46,8 @@ public class CreateBookingService {
         booking.setUser(user);
         booking.setRoom(room);
         booking.setStatus(BookingStatus.CONFIRMED);
+        booking.setCheckIn(request.checkIn());
+        booking.setCheckOut(request.checkOut());
 
         Booking savedBooking = bookingRepository.save(booking);
 
