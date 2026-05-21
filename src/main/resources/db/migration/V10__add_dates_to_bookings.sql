@@ -1,0 +1,14 @@
+ALTER TABLE bookings
+    ADD COLUMN check_in DATE NULL,
+    ADD COLUMN check_out DATE NULL,
+    ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
+UPDATE bookings
+SET check_in = CURRENT_DATE,
+    check_out = DATE_ADD(CURRENT_DATE, INTERVAL 1 DAY)
+WHERE check_in IS NULL
+   OR check_out IS NULL;
+
+ALTER TABLE bookings
+    MODIFY COLUMN check_in DATE NOT NULL,
+    MODIFY COLUMN check_out DATE NOT NULL;
