@@ -1,6 +1,8 @@
 package com.github.diegogrlima.reservaai.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
@@ -26,15 +28,25 @@ public record CreateBookingRequestDTO(
                 description = "Data de entrada da reserva (check-in). Formato: yyyy-MM-dd.",
                 example = "2026-05-21"
         )
-        @NotNull
+        @NotNull(message = "check-in e obrigatorio")
+        @FutureOrPresent(message = "check-in nao pode ser uma data no passado")
         LocalDate checkIn,
 
         @Schema(
                 description = "Data de saída da reserva (check-out). Formato: yyyy-MM-dd.",
                 example = "2026-05-25"
         )
-        @NotNull
+        @NotNull(message = "check-out e obrigatorio")
+        @FutureOrPresent(message = "check-out nao pode ser uma data no passado")
         LocalDate checkOut
 
 ) {
+        @AssertTrue(message = "check-out deve ser posterior ao check-in")
+        public boolean isCheckOutAfterCheckIn() {
+                if (checkIn == null || checkOut == null) {
+                        return true;
+                }
+
+                return checkOut.isAfter(checkIn);
+        }
 }
