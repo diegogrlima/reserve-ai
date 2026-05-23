@@ -6,11 +6,13 @@ import com.github.diegogrlima.reservaai.exception.RoomNotFoundException;
 import com.github.diegogrlima.reservaai.mapper.RoomMapper;
 import com.github.diegogrlima.reservaai.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class GetRoomByIdService {
 
     private final RoomRepository roomRepository;
@@ -18,8 +20,13 @@ public class GetRoomByIdService {
 
     @Transactional(readOnly = true)
     public RoomResponseDTO execute(Long id) {
+        log.debug("Buscando quarto id={}", id);
+
         Room room = roomRepository.findById(id)
-                .orElseThrow(() -> new RoomNotFoundException(id));
+                .orElseThrow(() -> {
+                    log.warn("Busca de quarto bloqueada: quarto nao encontrado id={}", id);
+                    return new RoomNotFoundException(id);
+                });
 
         return roomMapper.toResponse(room);
     }

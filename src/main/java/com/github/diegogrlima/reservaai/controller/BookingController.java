@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/bookings")
 @RequiredArgsConstructor
+@Slf4j
 @Tag(name = "Reservas", description = "Operações de cadastro, consulta, atualização e cancelamento de reservas.")
 public class BookingController {
 
@@ -54,6 +56,8 @@ public class BookingController {
                     content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<BookingResponseDTO> create(@Valid @RequestBody CreateBookingRequestDTO request) {
+        log.info("Recebida requisicao para cadastrar reserva userId={} roomId={} checkIn={} checkOut={}",
+                request.userId(), request.roomId(), request.checkIn(), request.checkOut());
         BookingResponseDTO response = createBookingService.execute(request);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -65,6 +69,8 @@ public class BookingController {
             @ApiResponse(responseCode = "200", description = "Lista de reservas retornada com sucesso")
     })
     public ResponseEntity<Page<BookingResponseDTO>> getAll(@ParameterObject Pageable pageable) {
+        log.debug("Recebida requisicao para listar reservas page={} size={} sort={}",
+                pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort());
         return ResponseEntity.ok(getAllBookingsService.execute(pageable));
     }
 
@@ -84,6 +90,8 @@ public class BookingController {
             @PathVariable Long id,
             @Valid @RequestBody UpdateBookingRequestDTO request
     ) {
+        log.info("Recebida requisicao para atualizar reserva id={} userId={} roomId={}",
+                id, request.userId(), request.roomId());
         BookingResponseDTO response = updateBookingService.execute(id, request);
 
         return ResponseEntity.ok(response);
@@ -98,6 +106,7 @@ public class BookingController {
                     content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<BookingResponseDTO> cancel(@PathVariable Long id) {
+        log.info("Recebida requisicao para cancelar reserva id={}", id);
         BookingResponseDTO response = cancelBookingService.execute(id);
 
         return ResponseEntity.ok(response);

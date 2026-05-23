@@ -9,11 +9,13 @@ import com.github.diegogrlima.reservaai.mapper.JsonConverter;
 import com.github.diegogrlima.reservaai.mapper.RoomMapper;
 import com.github.diegogrlima.reservaai.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UpdateRoomService {
 
     private final RoomRepository roomRepository;
@@ -22,10 +24,17 @@ public class UpdateRoomService {
 
     @Transactional
     public RoomResponseDTO execute(Long id, UpdateRoomRequestDTO request) {
+        log.debug("Iniciando atualizacao de quarto id={} roomNumber={}", id, request.roomNumber());
+
         Room room = roomRepository.findById(id)
-                .orElseThrow(() -> new RoomNotFoundException(id));
+                .orElseThrow(() -> {
+                    log.warn("Atualizacao de quarto bloqueada: quarto nao encontrado id={}", id);
+                    return new RoomNotFoundException(id);
+                });
 
         if (roomRepository.existsByRoomNumberAndIdNot(request.roomNumber(), id)) {
+            log.warn("Atualizacao de quarto bloqueada por numero ja existente id={} roomNumber={}",
+                    id, request.roomNumber());
             throw new RoomAlreadyExistsException(request.roomNumber());
         }
 
@@ -39,6 +48,9 @@ public class UpdateRoomService {
         }
 
         Room updatedRoom = roomRepository.save(room);
+
+        log.info("Quarto atualizado com sucesso id={} roomNumber={}",
+                updatedRoom.getId(), updatedRoom.getRoomNumber());
 
         return roomMapper.toResponse(updatedRoom);
     }
