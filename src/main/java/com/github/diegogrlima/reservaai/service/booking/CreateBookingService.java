@@ -19,6 +19,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.time.temporal.ChronoUnit;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -73,6 +76,7 @@ public class CreateBookingService {
         booking.setStatus(BookingStatus.CONFIRMED);
         booking.setCheckIn(request.checkIn());
         booking.setCheckOut(request.checkOut());
+        booking.setTotalEstimatedValue(calculateTotalEstimatedValue(request, room));
 
         Booking savedBooking = bookingRepository.save(booking);
 
@@ -80,5 +84,11 @@ public class CreateBookingService {
                 savedBooking.getId(), user.getId(), room.getId(), savedBooking.getStatus());
 
         return bookingMapper.toResponse(savedBooking);
+    }
+
+    private BigDecimal calculateTotalEstimatedValue(CreateBookingRequestDTO request, Room room) {
+        long numberOfNights = ChronoUnit.DAYS.between(request.checkIn(), request.checkOut());
+
+        return room.getDailyRate().multiply(BigDecimal.valueOf(numberOfNights));
     }
 }

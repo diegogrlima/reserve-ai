@@ -22,6 +22,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,6 +45,7 @@ public class BookingController {
     private final CancelBookingService cancelBookingService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @Operation(summary = "Cadastrar reserva", description = "Cria uma reserva vinculada a um usuário e a um quarto com status CONFIRMED.")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Reserva cadastrada com sucesso",
@@ -64,6 +66,7 @@ public class BookingController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Listar reservas", description = "Retorna a listagem paginada de reservas.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Lista de reservas retornada com sucesso")
@@ -75,6 +78,7 @@ public class BookingController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Atualizar reserva", description = "Atualiza usuário e quarto de uma reserva já existente. Só bloqueia conflitos com reservas CONFIRMED.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Reserva atualizada com sucesso",
@@ -98,6 +102,7 @@ public class BookingController {
     }
 
     @PatchMapping("/{id}/cancel")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Cancelar reserva", description = "Altera o status da reserva para CANCELED.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Reserva cancelada com sucesso",

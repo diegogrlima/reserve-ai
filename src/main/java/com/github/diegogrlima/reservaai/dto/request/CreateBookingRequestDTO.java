@@ -9,6 +9,7 @@ import java.time.LocalDate;
 
 @Schema(description = "Dados para cadastro de reserva.")
 public record CreateBookingRequestDTO(
+
         @Schema(description = "Identificador do usuario.", example = "1")
         @NotNull
         Long userId,

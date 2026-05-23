@@ -21,16 +21,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/users")
 @RequiredArgsConstructor
 @Slf4j
-@Tag(name = "Usuários", description = "Operações de consulta de usuários.")
-@PreAuthorize("hasRole('ADMIN')")
+@Tag(name = "Usuarios", description = "Operacoes de consulta de usuarios.")
 public class UserController {
 
     private final GetAllUsersService getAllUsersService;
 
     @GetMapping
-    @Operation(summary = "Listar usuários", description = "Retorna a listagem paginada de usuários.")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Listar usuarios", description = "Retorna a listagem paginada de usuarios.")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Lista de usuários retornada com sucesso")
+            @ApiResponse(responseCode = "200", description = "Lista de usuarios retornada com sucesso")
     })
     public ResponseEntity<Page<UserResponseDTO>> getAll(@ParameterObject Pageable pageable) {
         log.debug("Recebida requisicao para listar usuarios page={} size={} sort={}",
