@@ -5,6 +5,8 @@ import com.github.diegogrlima.reservaai.domain.model.Booking;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
@@ -15,4 +17,18 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     boolean existsByUserIdAndStatus(Long userId, BookingStatus status);
 
     boolean existsByUserIdAndStatusAndIdNot(Long userId, BookingStatus status, Long id);
+
+    boolean existsByUserIdAndStatusAndCheckInLessThanEqualAndCheckOutGreaterThanEqual(
+            Long userId,
+            BookingStatus status,
+            LocalDate checkOut,
+            LocalDate checkIn
+    );
+
+    boolean existsByRoomIdAndStatusAndCheckInLessThanEqualAndCheckOutGreaterThanEqual(
+            Long roomId,
+            BookingStatus status,
+            LocalDate checkOut,
+            LocalDate checkIn
+    );
 }

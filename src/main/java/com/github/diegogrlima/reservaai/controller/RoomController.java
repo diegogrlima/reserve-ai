@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/rooms")
 @RequiredArgsConstructor
+@Slf4j
 @Tag(name = "Quartos", description = "Operações de cadastro, consulta, atualização e remoção de quartos.")
 public class RoomController {
 
@@ -58,6 +60,7 @@ public class RoomController {
                     content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<RoomResponseDTO> create(@Valid @RequestBody CreateRoomRequestDTO request) {
+        log.info("Recebida requisicao para cadastrar quarto roomNumber={}", request.roomNumber());
         RoomResponseDTO response = createRoomService.execute(request);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -70,6 +73,8 @@ public class RoomController {
             @ApiResponse(responseCode = "200", description = "Lista de quartos retornada com sucesso")
     })
     public ResponseEntity<Page<RoomResponseDTO>> getAll(@ParameterObject Pageable pageable) {
+        log.debug("Recebida requisicao para listar quartos page={} size={} sort={}",
+                pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort());
         Page<RoomResponseDTO> response = getAllRoomsService.execute(pageable);
 
         return ResponseEntity.ok(response);
@@ -82,6 +87,8 @@ public class RoomController {
             @ApiResponse(responseCode = "200", description = "Lista de quartos disponíveis retornada com sucesso")
     })
     public ResponseEntity<Page<RoomResponseDTO>> getAvailable(@ParameterObject Pageable pageable) {
+        log.debug("Recebida requisicao para listar quartos disponiveis page={} size={} sort={}",
+                pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort());
         Page<RoomResponseDTO> response = getAvailableRoomsService.execute(pageable);
 
         return ResponseEntity.ok(response);
@@ -97,6 +104,7 @@ public class RoomController {
                     content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<RoomResponseDTO> getById(@PathVariable Long id) {
+        log.debug("Recebida requisicao para buscar quarto id={}", id);
         RoomResponseDTO response = getRoomByIdService.execute(id);
 
         return ResponseEntity.ok(response);
@@ -119,6 +127,7 @@ public class RoomController {
             @PathVariable Long id,
             @Valid @RequestBody UpdateRoomRequestDTO request
     ) {
+        log.info("Recebida requisicao para atualizar quarto id={} roomNumber={}", id, request.roomNumber());
         RoomResponseDTO response = updateRoomService.execute(id, request);
 
         return ResponseEntity.ok(response);
@@ -135,6 +144,7 @@ public class RoomController {
                     content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
     public ResponseEntity<Void> delete(@PathVariable Long id) {
+        log.info("Recebida requisicao para remover quarto id={}", id);
         deleteRoomService.execute(id);
 
         return ResponseEntity.noContent().build();

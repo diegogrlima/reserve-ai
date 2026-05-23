@@ -8,11 +8,13 @@ import com.github.diegogrlima.reservaai.mapper.JsonConverter;
 import com.github.diegogrlima.reservaai.mapper.RoomMapper;
 import com.github.diegogrlima.reservaai.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CreateRoomService {
 
     private final RoomRepository roomRepository;
@@ -21,7 +23,10 @@ public class CreateRoomService {
 
     @Transactional
     public RoomResponseDTO execute(CreateRoomRequestDTO request) {
+        log.debug("Iniciando cadastro de quarto roomNumber={}", request.roomNumber());
+
         if (roomRepository.existsByRoomNumber(request.roomNumber())) {
+            log.warn("Cadastro de quarto bloqueado por numero ja existente roomNumber={}", request.roomNumber());
             throw new RoomAlreadyExistsException(request.roomNumber());
         }
 
@@ -35,6 +40,9 @@ public class CreateRoomService {
         }
 
         Room savedRoom = roomRepository.save(room);
+
+        log.info("Quarto cadastrado com sucesso id={} roomNumber={}",
+                savedRoom.getId(), savedRoom.getRoomNumber());
 
         return roomMapper.toResponse(savedRoom);
     }
