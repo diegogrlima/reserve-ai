@@ -15,11 +15,13 @@ import com.github.diegogrlima.reservaai.repository.BookingRepository;
 import com.github.diegogrlima.reservaai.repository.RoomRepository;
 import com.github.diegogrlima.reservaai.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CreateBookingService {
 
     private final BookingRepository bookingRepository;
@@ -29,25 +31,53 @@ public class CreateBookingService {
 
     @Transactional
     public BookingResponseDTO execute(CreateBookingRequestDTO request) {
-        if (bookingRepository.existsByUserIdAndStatus(request.userId(), BookingStatus.CONFIRMED)) {
+        log.debug("Iniciando cadastro de reserva userId={} roomId={} checkIn={} checkOut={}",
+                request.userId(), request.roomId(), request.checkIn(), request.checkOut());
+
+        if (bookingRepository.existsByUserIdAndStatusAndCheckInLessThanEqualAndCheckOutGreaterThanEqual(
+                request.userId(),
+                BookingStatus.CONFIRMED,
+                request.checkOut(),
+                request.checkIn()
+        )) {
+            log.warn("Cadastro de reserva bloqueado por conflito de usuario userId={} checkIn={} checkOut={}",
+                    request.userId(), request.checkIn(), request.checkOut());
             throw new UserAlreadyBookedException(request.userId());
         }
 
-        if (bookingRepository.existsByRoomIdAndStatus(request.roomId(), BookingStatus.CONFIRMED)) {
+        if (bookingRepository.existsByRoomIdAndStatusAndCheckInLessThanEqualAndCheckOutGreaterThanEqual(
+                request.roomId(),
+                BookingStatus.CONFIRMED,
+                request.checkOut(),
+                request.checkIn()
+        )) {
+            log.warn("Cadastro de reserva bloqueado por conflito de quarto roomId={} checkIn={} checkOut={}",
+                    request.roomId(), request.checkIn(), request.checkOut());
             throw new BookingAlreadyExistsException(request.roomId());
         }
 
         User user = userRepository.findById(request.userId())
-                .orElseThrow(() -> new UserNotFoundException(request.userId()));
+                .orElseThrow(() -> {
+                    log.warn("Cadastro de reserva bloqueado: usuario nao encontrado userId={}", request.userId());
+                    return new UserNotFoundException(request.userId());
+                });
         Room room = roomRepository.findById(request.roomId())
-                .orElseThrow(() -> new RoomNotFoundException(request.roomId()));
+                .orElseThrow(() -> {
+                    log.warn("Cadastro de reserva bloqueado: quarto nao encontrado roomId={}", request.roomId());
+                    return new RoomNotFoundException(request.roomId());
+                });
 
         Booking booking = new Booking();
         booking.setUser(user);
         booking.setRoom(room);
         booking.setStatus(BookingStatus.CONFIRMED);
+        booking.setCheckIn(request.checkIn());
+        booking.setCheckOut(request.checkOut());
 
         Booking savedBooking = bookingRepository.save(booking);
+
+        log.info("Reserva cadastrada com sucesso id={} userId={} roomId={} status={}",
+                savedBooking.getId(), user.getId(), room.getId(), savedBooking.getStatus());
 
         return bookingMapper.toResponse(savedBooking);
     }

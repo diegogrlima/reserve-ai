@@ -17,6 +17,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -43,4 +45,10 @@ public class Booking {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private BookingStatus status = BookingStatus.CONFIRMED;
+
+    @Column(name = "check_in", nullable = false)
+    private LocalDate checkIn;
+
+    @Column(name = "check_out", nullable = false)
+    private LocalDate checkOut;
 }
